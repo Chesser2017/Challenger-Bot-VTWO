@@ -16,7 +16,7 @@ for(const file of commandFiles){
 }
 
 client.once('ready', () => {
-    client.user.setActivity('evades.io | .help', {type: "PLAYING"});;
+    client.user.setActivity(`evades.io | ${prefix}help`, {type: "PLAYING"});;
     console.log('ready');
  })
 

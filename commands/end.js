@@ -1,9 +1,9 @@
 const {getUserFromMention, setCP, setModifier} = require('../functions.js');
-const {tierIDs} = require('../config.json');
+const {tierIDs, prefix} = require('../config.json');
 const Discord = require('discord.js');
 module.exports = {
     name: "end",
-    description: "Adds cp to the first user mentioned. Use it like *.end user1 user2*",
+    description: `Adds cp to the first user mentioned. Use it like *${prefix}end winner loser*`,
     modOnly: true,
     async execute(msg, args, client){
         try{
