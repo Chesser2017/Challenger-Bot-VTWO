@@ -1,4 +1,4 @@
-const GoogleSpreadsheet = require('google-spreadsheet');
+const {GoogleSpreadsheet} = require('google-spreadsheet');
 const {promisify} = require('util');
 const credentials = {
     type: "service_account",
