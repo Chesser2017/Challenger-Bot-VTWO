@@ -17,7 +17,7 @@ module.exports = {
             if(winner.user.bot && loser.user.bot) return msg.channel.send(`A bot vs a bot...I wonder who'd win.`);
             if(winner.user.bot || loser.user.bot) return msg.channel.send(`Bots can't fight matches!`);
             if(winner === loser) return msg.channel.send(`Wow...${loser.user} lost to themself! What a noob.`);
-            if(!winner || !loser) return msg.channel.send(`You need to provide 2 users.`);
+            if(!winner.user || !loser.user) return msg.channel.send(`You need to provide 2 users.`);
             const tierDifference = tierIDs.indexOf(loserTier.id) - tierIDs.indexOf(winnerTier.id);
 
             let points = setCP(tierDifference);
