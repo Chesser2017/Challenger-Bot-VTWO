@@ -14,7 +14,6 @@ const credentials = {
   }
 
 const main = async function(){
-    console.log(credentials)
     const doc = new GoogleSpreadsheet('1JWmcr3BOz1A5R3KOfNQ-edkKiF3nun-cg_VFEgtk_Go');
     await doc.useServiceAccountAuth(credentials);
     await doc.loadInfo();
