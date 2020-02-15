@@ -1,24 +1,24 @@
-const GoogleSpreadsheet = require('google-spreadsheet');
+const {GoogleSpreadsheet} = require('google-spreadsheet');
 const {promisify} = require('util');
 const credentials = {
     type: "service_account",
-    project_id: "challenger-database",
+    project_id: "challenger-268214",
     private_key_id: process.env.PRIVATE_KEY_ID,
     private_key: process.env.PRIVATE_KEY,
-    client_email: "challenger@challenger-database.iam.gserviceaccount.com",
-    client_id: "110156662503213012063",
+    client_email: "challenger@challenger-268214.iam.gserviceaccount.com",
+    client_id: "106919637845666032670",
     auth_uri: "https://accounts.google.com/o/oauth2/auth",
     token_uri: "https://oauth2.googleapis.com/token",
     auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/challenger%40challenger-database.iam.gserviceaccount.com"
-  };
+    client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/challenger%40challenger-268214.iam.gserviceaccount.com"
+  }
 
 const main = async function(){
     const doc = new GoogleSpreadsheet('1JWmcr3BOz1A5R3KOfNQ-edkKiF3nun-cg_VFEgtk_Go');
-    await promisify(doc.useServiceAccountAuth)(credentials);
-    const info = await promisify(doc.getInfo)();
-    const accountsSheet = info.worksheets[0];
-    const userBanks = await promisify(accountsSheet.getRows)();
+    await doc.useServiceAccountAuth(credentials);
+    await doc.loadInfo();
+    const accountsSheet = doc.sheetsByIndex[0];
+    const userBanks = await accountsSheet.getRows();
 
     const fetchBank = async function(userID){
         let userBank = userBanks.find(userBank => userBank.id === userID);
@@ -30,7 +30,7 @@ const main = async function(){
                 losses: 0,
                 lbpoints: 0
             };
-            await promisify(accountsSheet.addRow)(userBank);
+            await accountsSheet.addRow(userBank);
         }
         return {
             id: userID,
@@ -49,16 +49,15 @@ const main = async function(){
                 losses: 0,
                 lbpoints: 0
             };
-            await promisify(accountsSheet.addRow)(newBank);
+            await accountsSheet.addRow(newBank);
         }
-        for(let i = 0; i < userBanks.length; i++){
-            let userBank = userBanks[i];
+        for(let userBank of userBanks){
             if(userBank.id === userID){
                 userBank.cp = rowObject.cp || userBank.cp;
                 userBank.lbpoints = rowObject.lbpoints || userBank.lbpoints;
                 userBank.wins = rowObject.wins || userBank.wins;
                 userBank.losses = rowObject.losses || userBank.losses;
-                userBank.save();
+                await userBank.save();
                 break;
             }
         }
