@@ -32,7 +32,8 @@ module.exports = {
         let challengerRoles = msg.guild.members.get(challenger.id).roles;
         let challengedRoles = msg.guild.members.get(challenged.id).roles;
         let Bronze = msg.guild.roles.get(tierIDs[0]);
-        
+        const challengeResolved = false;
+
         if(challenger.id === challenged.id){
             return msg.channel.send(`You cannot challenge yourself, ${msg.author}`);
         }
@@ -69,7 +70,9 @@ module.exports = {
         await sentMsg.react('❎');
 
         sentMsg.delete(300000).then(thisMsg => {
-            return msg.reply(` the challenge has expired!`); 
+            if(!challengeResolved){
+                return msg.reply(` the challenge has expired!`); 
+            }
         });
         
 
@@ -77,7 +80,7 @@ module.exports = {
             return (reaction.emoji.name === '✅' || reaction.emoji.name === '❎') && (user.id === challenged.id) 
         };
 
-        const reactionCollector = sentMsg.createReactionCollector(filter, {time: 30000, max: 1});
+        const reactionCollector = sentMsg.createReactionCollector(filter, {time: 300000, max: 1});
         
         reactionCollector.on('collect', (reaction, reactionCollector) => {
             if(reaction.emoji.name === '✅'){
@@ -88,6 +91,7 @@ module.exports = {
                     .setFooter(new Date());
                 sentMsg.edit('<#667803562277077072>');
                 challengeLog.send(challengeMsg);
+                challengeResolved = true;
                 //If challenged or challenger does not have a tier, add it
                 if(!challengerRoles.some(tier => tierIDs.includes(tier.id))){
                     msg.guild.members.get(challenger.id).addRole(Bronze);
@@ -114,6 +118,7 @@ module.exports = {
             }
             else{
                 sentMsg.delete();
+                challengeResolved = true;
                 return msg.reply(` ${challenged} has declined the game request!`);
             }
         })
