@@ -119,7 +119,8 @@ module.exports = {
             else{
                 sentMsg.delete();
                 challengeResolved = true;
-                return msg.reply(` ${challenged} has declined the game request!`);
+                msg.reply(` ${challenged} has declined the game request!`);
+                return;
             }
         })
     }

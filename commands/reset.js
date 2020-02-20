@@ -33,14 +33,14 @@ module.exports = {
                     bank.losses = 0;
                     bank.save();
                 }
-                sentMsg.delete();
+                sentMsg.edit(`Reseted cp for all users.`);
                 resolved = true;
-                return msg.reply(` reseted cp for all users.`);
+                return;
             }
             else{
-                sentMsg.delete();
+                sentMsg.edit(`Ended process.`);
                 resolved = true;
-                return msg.reply(` ended process.`);
+                return;
             }
         })
 
