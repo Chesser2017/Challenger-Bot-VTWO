@@ -7,7 +7,7 @@ module.exports = {
         if(msg.author.id != '402053003474894849' && !msg.member.hasPermission('ADMINISTRATOR')){
             return msg.reply(` you have to be an admin to use that command!`);
         }
-        const resolved = false;
+        let resolved = false;
         const {changeValue, userBanks} = await (require('../spreadsheet.js'));
         let sentMsg = await msg.channel.send(`Are you sure you want to do that command?`);
         await sentMsg.react('✅');

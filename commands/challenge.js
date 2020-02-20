@@ -32,7 +32,7 @@ module.exports = {
         let challengerRoles = msg.guild.members.get(challenger.id).roles;
         let challengedRoles = msg.guild.members.get(challenged.id).roles;
         let Bronze = msg.guild.roles.get(tierIDs[0]);
-        const challengeResolved = false;
+        let challengeResolved = false;
 
         if(challenger.id === challenged.id){
             return msg.channel.send(`You cannot challenge yourself, ${msg.author}`);
