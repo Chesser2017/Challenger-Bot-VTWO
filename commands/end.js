@@ -41,13 +41,13 @@ module.exports = {
             
             
 
-            await changeValue(winner.user.id, {
+            await changeValue(winnerBank, {
                 cp: winnerCp,
                 lbpoints: winnerLBP,
                 wins: winnerBank.wins + 1,
             });
 
-            await changeValue(loser.user.id, {
+            await changeValue(loserBank, {
                 cp: loserCp, 
                 lbpoints: loserLBP,
                 losses: loserBank.losses + 1

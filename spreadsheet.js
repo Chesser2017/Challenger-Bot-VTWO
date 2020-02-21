@@ -40,28 +40,12 @@ const main = async function(){
             lbpoints: parseInt(userBank.lbpoints)
         }
     }
-    const changeValue = async function(userID, rowObject){
-        if(!userBanks.some(userBank => userBank.id === userID)){
-            let newBank = {
-                id: userID,
-                cp: 0,
-                wins: 0,
-                losses: 0,
-                lbpoints: 0
-            };
-            await accountsSheet.addRow(newBank);
-        }
-        for(let userBank of userBanks){
-            if(userBank.id === userID){
-                userBank.cp = rowObject.cp || userBank.cp;
-                userBank.lbpoints = rowObject.lbpoints || userBank.lbpoints;
-                userBank.wins = rowObject.wins || userBank.wins;
-                userBank.losses = rowObject.losses || userBank.losses;
-                await userBank.save();
-                break;
-            }
-        }
-        
+    const changeValue = async function(userBank, rowObject){            
+        userBank.cp = rowObject.cp || userBank.cp;
+        userBank.lbpoints = rowObject.lbpoints || userBank.lbpoints;
+        userBank.wins = rowObject.wins || userBank.wins;
+        userBank.losses = rowObject.losses || userBank.losses;
+        await userBank.save();
     }
     return {
         fetchBank,
