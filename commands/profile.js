@@ -15,8 +15,8 @@ module.exports = {
         const userTier = userMember.roles.find(tier => tierIDs.includes(tier.id)) || Bronze;
         try{
             const userBank = await fetchBank(user.id);
-            const gamesPlayed = userBank.wins + userBank.losses;
-            const winPercentage = (userBank.wins / gamesPlayed) * 100 || NaN;
+            const gamesPlayed = parseInt(userBank.wins) + parseInt(userBank.losses);
+            const winPercentage = (parseInt(userBank.wins) / gamesPlayed) * 100 || NaN;
             const profile = new Discord.RichEmbed()
                             .setColor('#8a42f5')
                             .setAuthor(`${user.username}`, `${user.displayAvatarURL}`)

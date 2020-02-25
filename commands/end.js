@@ -9,8 +9,8 @@ module.exports = {
         try{
             const {fetchBank, changeValue} = await(require('../spreadsheet.js'));
             const Bronze = msg.guild.roles.get(tierIDs[0]),
-                winner = await msg.guild.fetchMember(getUserFromMention(args[1], client)),
-                loser = await msg.guild.fetchMember(getUserFromMention(args[2], client)),
+                winner = await msg.guild.fetchMember(await getUserFromMention(args[1], client)),
+                loser = await msg.guild.fetchMember(await getUserFromMention(args[2], client)),
                 winnerTier = winner.roles.find(tier => tierIDs.includes(tier.id)) || Bronze,
                 loserTier = loser.roles.find(tier => tierIDs.includes(tier.id)) || Bronze;
 
@@ -23,6 +23,16 @@ module.exports = {
 
             let winnerBank = await fetchBank(winner.user.id);
             let loserBank = await fetchBank(loser.user.id);
+
+            winnerBank.cp = parseInt(winnerBank.cp);
+            winnerBank.lbpoints = parseInt(winnerBank.lbpoints);
+            winnerBank.wins = parseInt(winnerBank.wins);
+            winnerBank.losses = parseInt(winnerBank.losses);
+
+            loserBank.cp = parseInt(loserBank.cp);
+            loserBank.lbpoints = parseInt(loserBank.lbpoints);
+            loserBank.wins = parseInt(loserBank.wins);
+            loserBank.losses = parseInt(loserBank.losses);
 
             let winnerCp = winnerBank.cp + points;
             let loserCp = loserBank.cp - points;
@@ -46,13 +56,13 @@ module.exports = {
                 lbpoints: winnerLBP,
                 wins: winnerBank.wins + 1,
             });
-
+            await winnerBank.save();
             await changeValue(loserBank, {
                 cp: loserCp, 
                 lbpoints: loserLBP,
                 losses: loserBank.losses + 1
             });
-
+            await loserBank.save();
             let endMsg = new Discord.RichEmbed()
                             .setColor(`#8a42f5`)
                             .addField(`POINTS`, `Added **${points}cp** to ${winner}\nRemoved **${points}cp** from ${loser}`)
@@ -60,7 +70,7 @@ module.exports = {
             msg.channel.send(endMsg)
         }
         catch(e){
-            if(e.name === "TypeError") return msg.channel.send(`You need to provide 2 users.`);
+            //if(e.name === "TypeError") return msg.channel.send(`You need to provide 2 users.`);
             console.log(e);
         }
     }

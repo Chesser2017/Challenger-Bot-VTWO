@@ -43,11 +43,11 @@ const setModifier = tier => {
         return modifier;
     }
 }
-const getUserFromMention = (mention, client) => {
+const getUserFromMention = async (mention, client) => {
 	const matches = mention.match(/^<@!?(\d+)>$/);
 	if (!matches) return;
 	const id = matches[1];
-	return client.users.get(id);
+	return (await client.fetchUser(id));
 }
 const setCP = tierDifference => {
     if(tierDifference <= 0){

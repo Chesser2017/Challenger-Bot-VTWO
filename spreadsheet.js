@@ -21,23 +21,19 @@ const main = async function(){
     const userBanks = await accountsSheet.getRows();
 
     const fetchBank = async function(userID){
-        let userBank = userBanks.find(userBank => userBank.id === userID);
-        if(!userBank){
-            userBank = {
+        if(!userBanks.some(bank => bank.id === userID)){
+            let newBank = {
                 id: userID,
                 cp: 0,
                 wins: 0,
                 losses: 0,
                 lbpoints: 0
             };
-            await accountsSheet.addRow(userBank);
+            let userBank = await accountsSheet.addRow(newBank);
+            return userBank;
         }
-        return {
-            id: userID,
-            cp: parseInt(userBank.cp),
-            wins: parseInt(userBank.wins),
-            losses: parseInt(userBank.losses),
-            lbpoints: parseInt(userBank.lbpoints)
+        else {
+            return userBanks.find(bank => bank.id === userID);
         }
     }
     const changeValue = async function(userBank, rowObject){            
@@ -45,7 +41,6 @@ const main = async function(){
         userBank.lbpoints = rowObject.lbpoints || userBank.lbpoints;
         userBank.wins = rowObject.wins || userBank.wins;
         userBank.losses = rowObject.losses || userBank.losses;
-        await userBank.save();
     }
     return {
         fetchBank,
