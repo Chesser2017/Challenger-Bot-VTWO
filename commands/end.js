@@ -70,7 +70,7 @@ module.exports = {
             msg.channel.send(endMsg)
         }
         catch(e){
-            //if(e.name === "TypeError") return msg.channel.send(`You need to provide 2 users.`);
+            if(e.name === "TypeError") return msg.channel.send(`You need to provide 2 users.`);
             console.log(e);
         }
     }
